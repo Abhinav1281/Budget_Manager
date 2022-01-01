@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Budget</string>
+    <string name="def_calc_text">Amount Here</string>
+</resources>
