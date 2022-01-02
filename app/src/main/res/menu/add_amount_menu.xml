@@ -7,4 +7,10 @@
     app:showAsAction="ifRoom"
     android:iconTint="@color/white"
     android:title="Report" />
+<item
+    android:id="@+id/date_select"
+    android:icon="@drawable/ic_calendar"
+    app:showAsAction="always"
+    android:iconTint="@color/white"
+    android:title="Date Select"/>
 </menu>

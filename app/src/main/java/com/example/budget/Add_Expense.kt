@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_expense.*
 
 class Add_Expense : AppCompatActivity() {
@@ -40,6 +42,20 @@ class Add_Expense : AppCompatActivity() {
         }
         btn_submit.setOnClickListener {
             onCalcBtnPress(btn_submit)
+        }
+
+        date_final_btn.setOnClickListener {
+            var date=date_picker.date
+            TODO("Convert Date type to suitable format")
+            calc_layout.alpha= 1.0F
+            category_layout.alpha=1.0F
+            date_layout.alpha=0.0f
+        }
+
+        date_picker_cancel.setOnClickListener {
+            calc_layout.alpha= 1.0F
+            category_layout.alpha=1.0F
+            date_layout.alpha=0.0f
         }
     }
 
@@ -112,5 +128,18 @@ class Add_Expense : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.add_amount_menu,menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId)
+        {
+            R.id.date_select->
+            {
+                    calc_layout.alpha= 0.0F
+                    category_layout.alpha=0.0F
+                    date_layout.alpha=1.0f
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
