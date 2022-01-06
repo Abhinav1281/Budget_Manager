@@ -601,15 +601,17 @@
             app:picker_displayDaysOfMonth="true"
             app:picker_displayDays="false"
             app:picker_displayMonth="true"
-            app:picker_selectedTextColor="@color/Yellow"
+            app:picker_selectorColor="@color/Blue"
+            app:picker_selectedTextColor="@color/Red"
             />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/date_final_btn"
             android:text="OK"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/Blue"
+            android:textStyle="bold"
+            android:textColor="@color/Red"
+            android:backgroundTint="@color/white"
             android:textSize="20sp"
             android:layout_alignParentEnd="true"
             android:layout_below="@id/date_picker"/>

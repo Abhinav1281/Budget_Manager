@@ -7,28 +7,27 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ImageButton
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import com.example.budget.utils.ExpenseViewModel
 import kotlinx.android.synthetic.main.activity_add_expense.*
-import java.security.AccessController.getContext
 import java.util.*
 
 class Add_Expense : AppCompatActivity() {
 
     private lateinit var btn_list:List<Button>
-    var date: Date? =null
+    private var date: Date? =null
     private lateinit var btn_cat_list:List<ImageButton>
     private var category: String ="General"
     private lateinit var cat_list:List<String>
     private lateinit var vm:ExpenseViewModel
-    val list= mutableListOf<Double>()
+    private val list= mutableListOf<Double>()
+    private var pointFlag=true
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_expense)
@@ -126,10 +125,7 @@ class Add_Expense : AppCompatActivity() {
 
     private fun onCalcBtnPress(item: View)
     {
-        if(list.isNotEmpty()) {
-            eqn_holder.text = getText(R.string.def_calc_text)
-            list.clear()
-        }
+
         when(item)
         {
             //numerical buttons
@@ -145,16 +141,27 @@ class Add_Expense : AppCompatActivity() {
             btn_9->addNumber('9')
             btn_dot->
             {
-                if(!eqn_holder.text.toString().contains('.'))
+                if(pointFlag)
                     addNumber('.')
             }
 
             //function buttons
-            btn_clear->eqn_holder.text=getString(R.string.def_calc_text)
-            btn_plus->addNumber('+')
-            btn_minus->addNumber('-')
-            btn_multiply->addNumber('*')
-            btn_divide->addNumber('/')
+            btn_clear-> {
+                pointFlag=true
+                eqn_holder.text = getString(R.string.def_calc_text)
+            }
+            btn_plus-> {
+                addNumber('+')
+            }
+            btn_minus-> {
+                addNumber('-')
+            }
+            btn_multiply-> {
+                addNumber('*')
+            }
+            btn_divide-> {
+                addNumber('/')
+            }
             btn_equal->calculateValue()
             btn_backspace->eqn_holder.text=eqn_holder.text.toString().dropLast(1)
 
@@ -167,13 +174,63 @@ class Add_Expense : AppCompatActivity() {
 
     private fun addNumber(c:Char)
     {
-        if(eqn_holder.text==getString(R.string.def_calc_text))
-            if(c == '.')
-                eqn_holder.text= "0."
-            else
-                eqn_holder.text=c.toString()
-        else
-            eqn_holder.text=eqn_holder.text.toString()+c.toString()
+        if(c=='+'||c=='-'||c=='*'||c=='/') {
+            if(list.isNotEmpty())
+                list.clear()
+            pointFlag = true
+            if(eqn_holder.text.toString() == "")
+            {
+                eqn_holder.text = "0$c"
+            }
+            else if(eqn_holder.text.last()=='+'||
+                eqn_holder.text.last()=='-'||
+                eqn_holder.text.last()=='*'||
+                eqn_holder.text.last()=='/'||
+                eqn_holder.text.last()=='.')
+            {
+                eqn_holder.text=eqn_holder.text.dropLast(1)
+                eqn_holder.text="${eqn_holder.text}$c"
+            }
+            else {
+                eqn_holder.text = "${eqn_holder.text}$c"
+            }
+
+        }
+        else if(c=='.') {
+            if(list.isNotEmpty()) {
+                eqn_holder.text = getText(R.string.def_calc_text)
+                list.clear()
+            }
+            pointFlag = false
+            if(eqn_holder.text.toString() == "")
+            {
+                eqn_holder.text = "0$c"
+            }
+            else if(eqn_holder.text.last()=='+'||
+                eqn_holder.text.last()=='-'||
+                eqn_holder.text.last()=='*'||
+                eqn_holder.text.last()=='/')
+            {
+                eqn_holder.text="${eqn_holder.text}0."
+            }
+            else {
+                eqn_holder.text = "${eqn_holder.text}$c"
+            }
+        }
+        else {
+            pointFlag=true
+            if(list.isNotEmpty()) {
+                eqn_holder.text = getText(R.string.def_calc_text)
+                list.clear()
+            }
+            if(eqn_holder.text.toString() == "0")
+            {
+                eqn_holder.text = "$c"
+            }
+            else {
+                eqn_holder.text = "${eqn_holder.text}$c"
+            }
+        }
     }
 
     private fun submitExpense() {
@@ -188,25 +245,35 @@ class Add_Expense : AppCompatActivity() {
         {
             val cal = Calendar.getInstance()
             cal.time = date
-            var amount = eqn_holder.text.toString().toDouble()
-            amount=String.format("%.2f", amount).toDouble()
-            vm.insert(Expense(amount, category, cal.get(Calendar.DAY_OF_MONTH),
-                cal.get(Calendar.MONTH), cal.get(Calendar.YEAR)))
-            Toast.makeText(this,"Expense Added!",Toast.LENGTH_SHORT).show()
-            eqn_holder.text=getString(R.string.def_calc_text)
+            if(eqn_holder.text=="NaN"||eqn_holder.text=="Infinity")
+                Toast.makeText(this,"Non Numbers not allowed as Amount",Toast.LENGTH_SHORT).show()
+            else {
+                var amount = eqn_holder.text.toString().toDouble()
+                if (amount == 0.0)
+                    Toast.makeText(this,
+                        "Negative or Zero Values for Amount not allowed",
+                        Toast.LENGTH_SHORT).show()
+                else {
+                    amount = String.format("%.2f", amount).toDouble()
+                    vm.insert(Expense(amount, category, cal.get(Calendar.DAY_OF_MONTH),
+                        cal.get(Calendar.MONTH), cal.get(Calendar.YEAR)))
+                    Toast.makeText(this, "Expense Added!", Toast.LENGTH_SHORT).show()
+                    eqn_holder.text = getString(R.string.def_calc_text)
+                }
+            }
         }
 
     }
 
     private fun calculateValue() {
-        var eqn=""
+        val eqn:String
         val li=eqn_holder.text.toString().last()
         eqn = if(li=='+'||li=='-'||li=='*'||li=='/')
             eqn_holder.text.toString().dropLast(1)+"!"
         else
             eqn_holder.text.toString()+"!"
         val symbol_list= mutableListOf<Char>()
-        var cur_amount:String=""
+        var cur_amount =""
         for(i in eqn)
         {
             if(i=='+'||i=='-'||i=='*'||i=='/'||i=='!')
@@ -223,7 +290,7 @@ class Add_Expense : AppCompatActivity() {
 
         for(symbol in symbol_list)
         {
-            var value:Double=0.0
+            var value =0.0
             when(symbol)
             {
                 '+'->value= list.removeAt(0)+list.removeAt(0)
@@ -234,7 +301,14 @@ class Add_Expense : AppCompatActivity() {
             Log.i("calc_list", "$list...$symbol_list")
             list.add(0, String.format("%.2f", value).toDouble())
         }
-        eqn_holder.text=list.last().toString()
+        if(list.last()<=0.0)
+        {
+            eqn_holder.text=getString(R.string.def_calc_text)
+            Toast.makeText(this,"Negative value of ${list.last()} not allowed",Toast.LENGTH_SHORT).show()
+            list.clear()
+        }
+        else
+            eqn_holder.text=list.last().toString()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

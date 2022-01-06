@@ -65,4 +65,19 @@ class ExpenseViewModel(app:Application):AndroidViewModel(app) {
     {
         return repository.getTotalYearCategoryExpense(year)
     }
+
+    fun getTodayCategorySumExpense(day:Int,month:Int,year:Int):LiveData<List<Expense>>
+    {
+        return repository.getTodayCategorySumExpense(day, month, year)
+    }
+
+    fun getMonthCategorySumExpense(month:Int,year:Int):LiveData<List<Expense>>
+    {
+        return repository.getMonthCategorySumExpense( month, year)
+    }
+
+    fun getYearCategorySumExpense(year:Int):LiveData<List<Expense>>
+    {
+        return repository.getYearCategorySumExpense( year)
+    }
 }

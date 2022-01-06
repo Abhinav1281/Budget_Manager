@@ -19,6 +19,7 @@ import android.widget.DatePicker
 
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.content.Intent
 
 
 class ReportActivity : AppCompatActivity() {
@@ -165,7 +166,7 @@ class ReportActivity : AppCompatActivity() {
         cal= Calendar.getInstance()
 
         //forListView
-        curCat= mutableListOf(cal.get(Calendar.DAY_OF_MONTH),cal.get(Calendar.MONTH),cal.get(Calendar.YEAR))
+        curCat= mutableListOf(-1,cal.get(Calendar.MONTH),cal.get(Calendar.YEAR))
 
         //for total expense
         vm.getTotalMonthCategoryExpense(cal.get(Calendar.MONTH),cal.get(Calendar.YEAR))
@@ -281,15 +282,25 @@ class ReportActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId)
         {
-            android.R.id.home->onBackPressed()
+            android.R.id.home->startActivity(Intent(this,Add_Expense::class.java))
             R.id.Calendar_call->datePickDialog()
+            R.id.show_as_list->goToListView()
         }
         return super.onOptionsItemSelected(item)
     }
 
+    private fun goToListView() {
+        val intent= Intent(this,ExpenseListDisplay::class.java)
+        intent.putExtra("DAY",curCat[0])
+        intent.putExtra("MONTH",curCat[1])
+        intent.putExtra("YEAR",curCat[2])
+
+        startActivity(intent)
+    }
+
     @RequiresApi(Build.VERSION_CODES.M)
     private fun datePickDialog() {
-        val datePickerDialog = DatePickerDialog(this,
+        val datePickerDialog = DatePickerDialog(this,R.style.DialogTheme,
             { _, year, monthOfYear, dayOfMonth ->
                 setViewNewDate(dayOfMonth,monthOfYear,year) },
             cal.get(Calendar.YEAR),

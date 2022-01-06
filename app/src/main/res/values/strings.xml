@@ -3,4 +3,6 @@
     <string name="def_calc_text">0</string>
     <string name="total_spent_value">Total:</string>
     <string name="nothing_to_show_report_text">Nothing To Show Right Now!</string>
+    <string name="total_expenses_list_string">Total Expenses:</string>
+    <string name="total_categories_list_view">Total Categories</string>
 </resources>

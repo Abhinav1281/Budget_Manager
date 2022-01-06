@@ -38,4 +38,13 @@ interface ExpenseDAO {
 
     @Query("select sum(amount) from Expense_Table where year=:year")
     fun getTotalYearExpense(year:Int):LiveData<Double>
+
+    @Query("select * from Expense_Table where day=:day and month=:month and year=:year Order By Year,Month,Day")
+    fun getTodayCategorySumExpense(day:Int,month:Int,year:Int):LiveData<List<Expense>>
+
+    @Query("select * from Expense_Table where month=:month and year=:year Order By Year,Month,Day")
+    fun getMonthCategorySumExpense(month:Int,year:Int):LiveData<List<Expense>>
+
+    @Query("select * from Expense_Table where year=:year Order By Year,Month,Day")
+    fun getYearCategorySumExpense(year:Int):LiveData<List<Expense>>
 }

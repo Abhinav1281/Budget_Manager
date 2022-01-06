@@ -3,6 +3,7 @@ package com.example.budget
 import android.app.Application
 import androidx.lifecycle.LiveData
 import com.example.budget.utils.subscribeOnBackground
+import kotlin.math.exp
 
 class ExpenseRepository(app:Application) {
 
@@ -76,5 +77,20 @@ class ExpenseRepository(app:Application) {
     fun getTotalYearCategoryExpense(year:Int):LiveData<Double>
     {
         return expDao.getTotalYearExpense(year)
+    }
+
+    fun getTodayCategorySumExpense(day:Int,month:Int,year:Int):LiveData<List<Expense>>
+    {
+        return expDao.getTodayCategorySumExpense(day, month, year)
+    }
+
+    fun getMonthCategorySumExpense(month:Int,year:Int):LiveData<List<Expense>>
+    {
+        return expDao.getMonthCategorySumExpense( month, year)
+    }
+
+    fun getYearCategorySumExpense(year:Int):LiveData<List<Expense>>
+    {
+        return expDao.getYearCategorySumExpense( year)
     }
 }
