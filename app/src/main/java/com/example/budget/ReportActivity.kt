@@ -352,4 +352,8 @@ class ReportActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        startActivity(Intent(this,Add_Expense::class.java))
+    }
+
 }

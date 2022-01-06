@@ -26,7 +26,7 @@ class ExpenseAdapter(private val onItemClickListener:(Expense)->Unit):ListAdapte
         with(getItem(position))
         {
             holder.title.text=Amount.toString()
-            holder.date.text="$Day.$Month.$Year"
+            holder.date.text="$Day.${Month+1}.$Year"
             holder.icon.setImageResource(iconlist[catList.indexOf(category)])
         }
     }
