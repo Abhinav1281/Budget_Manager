@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Budget">
         <activity
+            android:name=".ExpenseListDisplay"
+            android:exported="false" />
+        <activity
+            android:name=".ReportActivity"
+            android:exported="true" />
+        <activity
             android:name=".Add_Expense"
             android:exported="true" />
         <activity

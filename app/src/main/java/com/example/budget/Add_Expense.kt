@@ -1,30 +1,56 @@
 package com.example.budget
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProviders
+import com.example.budget.utils.ExpenseViewModel
 import kotlinx.android.synthetic.main.activity_add_expense.*
+import java.util.*
 
 class Add_Expense : AppCompatActivity() {
 
     private lateinit var btn_list:List<Button>
+    private var date: Date? =null
+    private lateinit var btn_cat_list:List<ImageButton>
+    private var category: String ="General"
+    private lateinit var cat_list:List<String>
+    private lateinit var vm:ExpenseViewModel
+    private val list= mutableListOf<Double>()
+    private var pointFlag=true
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_expense)
 
-        supportActionBar?.title="Enter Amount"
+        supportActionBar?.title= "Enter Amount"
+        supportActionBar?.setBackgroundDrawable(getDrawable(R.color.black))
 
+
+        //btn_array_init
         btn_list= arrayListOf(btn_0,btn_1,btn_2,btn_3,btn_4,btn_5,
             btn_6,btn_7,btn_8,btn_9,btn_plus,btn_minus,btn_divide,btn_multiply,
             btn_clear,btn_dot,btn_equal)
+        btn_cat_list= arrayListOf(btn_food,btn_shopping,btn_game,btn_general,
+            btn_mobile,btn_sports,btn_pet,btn_travel)
+        cat_list= arrayListOf("Food","Shopping","Game","General","Phone","Sports","Pets","Travel")
 
+        eqn_scroll.post {
+            eqn_scroll.fullScroll(View.FOCUS_RIGHT)
+        }
+        eqn_holder.isSelected=true
+        vm=ViewModelProviders.of(this)[ExpenseViewModel::class.java]
         setUpListeners()
+        onCatBtnPress(btn_general)
     }
 
     private fun setUpListeners()
@@ -37,64 +63,217 @@ class Add_Expense : AppCompatActivity() {
                 onCalcBtnPress(btn)
             }
         }
+
+        for(btn in btn_cat_list)
+        {
+            btn.setOnClickListener {
+                onCatBtnPress(btn)
+            }
+        }
         btn_backspace.setOnClickListener {
             onCalcBtnPress(btn_backspace)
         }
         btn_submit.setOnClickListener {
             onCalcBtnPress(btn_submit)
         }
-
+        open_calendar.setOnClickListener {
+            if(date_layout.visibility==View.GONE)
+            {
+                date_layout.visibility=View.VISIBLE
+                calc_layout.alpha= 0.0F
+                category_layout.alpha=0.0F
+                date_layout.alpha=1.0f
+            }
+            else
+            {
+                date=date_picker.date
+                date_layout.visibility=View.GONE
+                calc_layout.alpha= 1.0F
+                category_layout.alpha=1.0F
+                date_layout.alpha=0.0f
+            }
+        }
         date_final_btn.setOnClickListener {
-            var date=date_picker.date
-            TODO("Convert Date type to suitable format")
+            date=date_picker.date
+            date_layout.visibility=View.GONE
             calc_layout.alpha= 1.0F
             category_layout.alpha=1.0F
             date_layout.alpha=0.0f
+            open_calendar.setColorFilter(ContextCompat.getColor(this,R.color.white))
         }
 
         date_picker_cancel.setOnClickListener {
+            date_layout.visibility=View.GONE
             calc_layout.alpha= 1.0F
             category_layout.alpha=1.0F
             date_layout.alpha=0.0f
         }
     }
 
+    private fun onCatBtnPress(btn:ImageButton) {
+        for (b in btn_cat_list)
+            if (btn.id == b.id){
+                b.setBackgroundResource(R.drawable.button_bg_selected)
+                category= cat_list[btn_cat_list.indexOf(btn)]
+                btn.alpha=0.6f
+            }else {
+                b.setBackgroundResource(0)
+                b.alpha=1.0f
+            }
+//        Toast.makeText(this,category,Toast.LENGTH_SHORT).show()
+    }
+
     private fun onCalcBtnPress(item: View)
     {
+
         when(item)
         {
             //numerical buttons
-            btn_0->eqn_holder.text=eqn_holder.text.toString()+"0"
-            btn_1->eqn_holder.text=eqn_holder.text.toString()+"1"
-            btn_2->eqn_holder.text=eqn_holder.text.toString()+"2"
-            btn_3->eqn_holder.text=eqn_holder.text.toString()+"3"
-            btn_4->eqn_holder.text=eqn_holder.text.toString()+"4"
-            btn_5->eqn_holder.text=eqn_holder.text.toString()+"5"
-            btn_6->eqn_holder.text=eqn_holder.text.toString()+"6"
-            btn_7->eqn_holder.text=eqn_holder.text.toString()+"7"
-            btn_8->eqn_holder.text=eqn_holder.text.toString()+"8"
-            btn_9->eqn_holder.text=eqn_holder.text.toString()+"9"
-            btn_dot->eqn_holder.text=eqn_holder.text.toString()+"."
+            btn_0->addNumber('0')
+            btn_1->addNumber('1')
+            btn_2->addNumber('2')
+            btn_3->addNumber('3')
+            btn_4->addNumber('4')
+            btn_5->addNumber('5')
+            btn_6->addNumber('6')
+            btn_7->addNumber('7')
+            btn_8->addNumber('8')
+            btn_9->addNumber('9')
+            btn_dot->
+            {
+                if(pointFlag)
+                    addNumber('.')
+            }
 
             //function buttons
-            btn_clear->eqn_holder.text=getString(R.string.def_calc_text)
-            btn_plus->eqn_holder.text=eqn_holder.text.toString()+"+"
-            btn_minus->eqn_holder.text=eqn_holder.text.toString()+"-"
-            btn_multiply->eqn_holder.text=eqn_holder.text.toString()+"*"
-            btn_divide->eqn_holder.text=eqn_holder.text.toString()+"/"
+            btn_clear-> {
+                pointFlag=true
+                eqn_holder.text = getString(R.string.def_calc_text)
+            }
+            btn_plus-> {
+                addNumber('+')
+            }
+            btn_minus-> {
+                addNumber('-')
+            }
+            btn_multiply-> {
+                addNumber('*')
+            }
+            btn_divide-> {
+                addNumber('/')
+            }
             btn_equal->calculateValue()
             btn_backspace->eqn_holder.text=eqn_holder.text.toString().dropLast(1)
+
+            btn_submit->submitExpense()
         }
 
         if(eqn_holder.text.toString().isEmpty())
             eqn_holder.text=getText(R.string.def_calc_text)
     }
 
+    private fun addNumber(c:Char)
+    {
+        if(c=='+'||c=='-'||c=='*'||c=='/') {
+            if(list.isNotEmpty())
+                list.clear()
+            pointFlag = true
+            if(eqn_holder.text.toString() == "")
+            {
+                eqn_holder.text = "0$c"
+            }
+            else if(eqn_holder.text.last()=='+'||
+                eqn_holder.text.last()=='-'||
+                eqn_holder.text.last()=='*'||
+                eqn_holder.text.last()=='/'||
+                eqn_holder.text.last()=='.')
+            {
+                eqn_holder.text=eqn_holder.text.dropLast(1)
+                eqn_holder.text="${eqn_holder.text}$c"
+            }
+            else {
+                eqn_holder.text = "${eqn_holder.text}$c"
+            }
+
+        }
+        else if(c=='.') {
+            if(list.isNotEmpty()) {
+                eqn_holder.text = getText(R.string.def_calc_text)
+                list.clear()
+            }
+            pointFlag = false
+            if(eqn_holder.text.toString() == "")
+            {
+                eqn_holder.text = "0$c"
+            }
+            else if(eqn_holder.text.last()=='+'||
+                eqn_holder.text.last()=='-'||
+                eqn_holder.text.last()=='*'||
+                eqn_holder.text.last()=='/')
+            {
+                eqn_holder.text="${eqn_holder.text}0."
+            }
+            else {
+                eqn_holder.text = "${eqn_holder.text}$c"
+            }
+        }
+        else {
+            pointFlag=true
+            if(list.isNotEmpty()) {
+                eqn_holder.text = getText(R.string.def_calc_text)
+                list.clear()
+            }
+            if(eqn_holder.text.toString() == "0")
+            {
+                eqn_holder.text = "$c"
+            }
+            else {
+                eqn_holder.text = "${eqn_holder.text}$c"
+            }
+        }
+    }
+
+    private fun submitExpense() {
+        calculateValue()
+        if (date == null) {
+            Toast.makeText(this, "Please Select a Date!", Toast.LENGTH_SHORT).show()
+            open_calendar.setColorFilter(ContextCompat.getColor(this,R.color.Red))
+        }
+        else if(eqn_holder.text.toString()==getString(R.string.def_calc_text))
+            Toast.makeText(this,"Please enter some amount",Toast.LENGTH_SHORT).show()
+        else
+        {
+            val cal = Calendar.getInstance()
+            cal.time = date
+            if(eqn_holder.text=="NaN"||eqn_holder.text=="Infinity")
+                Toast.makeText(this,"Non Numbers not allowed as Amount",Toast.LENGTH_SHORT).show()
+            else {
+                var amount = eqn_holder.text.toString().toDouble()
+                if (amount == 0.0)
+                    Toast.makeText(this,
+                        "Negative or Zero Values for Amount not allowed",
+                        Toast.LENGTH_SHORT).show()
+                else {
+                    amount = String.format("%.2f", amount).toDouble()
+                    vm.insert(Expense(amount, category, cal.get(Calendar.DAY_OF_MONTH),
+                        cal.get(Calendar.MONTH), cal.get(Calendar.YEAR)))
+                    Toast.makeText(this, "Expense Added!", Toast.LENGTH_SHORT).show()
+                    eqn_holder.text = getString(R.string.def_calc_text)
+                }
+            }
+        }
+
+    }
+
     private fun calculateValue() {
-        val eqn=eqn_holder.text.toString()+"!"
-        val list= mutableListOf<Double>()
+        val eqn:String
+        val li=eqn_holder.text.toString().last()
+        eqn = if(li=='+'||li=='-'||li=='*'||li=='/')
+            eqn_holder.text.toString().dropLast(1)+"!"
+        else
+            eqn_holder.text.toString()+"!"
         val symbol_list= mutableListOf<Char>()
-        var cur_amount:String=""
+        var cur_amount =""
         for(i in eqn)
         {
             if(i=='+'||i=='-'||i=='*'||i=='/'||i=='!')
@@ -111,7 +290,7 @@ class Add_Expense : AppCompatActivity() {
 
         for(symbol in symbol_list)
         {
-            var value:Double=0.0
+            var value =0.0
             when(symbol)
             {
                 '+'->value= list.removeAt(0)+list.removeAt(0)
@@ -120,9 +299,16 @@ class Add_Expense : AppCompatActivity() {
                 '/'->value=list.removeAt(0)/list.removeAt(0)
             }
             Log.i("calc_list", "$list...$symbol_list")
-            list.add(0,value)
+            list.add(0, String.format("%.2f", value).toDouble())
         }
-        eqn_holder.text=list.last().toString()
+        if(list.last()<=0.0)
+        {
+            eqn_holder.text=getString(R.string.def_calc_text)
+            Toast.makeText(this,"Negative value of ${list.last()} not allowed",Toast.LENGTH_SHORT).show()
+            list.clear()
+        }
+        else
+            eqn_holder.text=list.last().toString()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -133,11 +319,9 @@ class Add_Expense : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId)
         {
-            R.id.date_select->
+            R.id.btn_report->
             {
-                    calc_layout.alpha= 0.0F
-                    category_layout.alpha=0.0F
-                    date_layout.alpha=1.0f
+                startActivity(Intent(this,ReportActivity::class.java))
             }
         }
         return super.onOptionsItemSelected(item)
