@@ -3,11 +3,26 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android_Personal/Budget/app/src/main/res/drawable-v24/button_bg_selected.xml" value="0.22777777777777777" />
         <entry key="..\:/Android_Personal/Budget/app/src/main/res/drawable/bg_basic.xml" value="0.23703703703703705" />
         <entry key="..\:/Android_Personal/Budget/app/src/main/res/drawable/button_bg.xml" value="0.23703703703703705" />
-        <entry key="..\:/Android_Personal/Budget/app/src/main/res/layout/activity_add_expense.xml" value="0.1793478260869565" />
+        <entry key="..\:/Android_Personal/Budget/app/src/main/res/drawable/ic_food.xml" value="0.2222222222222222" />
+        <entry key="..\:/Android_Personal/Budget/app/src/main/res/drawable/ic_game.xml" value="0.2222222222222222" />
+        <entry key="..\:/Android_Personal/Budget/app/src/main/res/drawable/ic_home.xml" value="0.2222222222222222" />
+        <entry key="..\:/Android_Personal/Budget/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2222222222222222" />
+        <entry key="..\:/Android_Personal/Budget/app/src/main/res/drawable/ic_mobile.xml" value="0.2222222222222222" />
+        <entry key="..\:/Android_Personal/Budget/app/src/main/res/drawable/ic_pets.xml" value="0.2222222222222222" />
+        <entry key="..\:/Android_Personal/Budget/app/src/main/res/drawable/ic_report.xml" value="0.2222222222222222" />
+        <entry key="..\:/Android_Personal/Budget/app/src/main/res/drawable/ic_shopping.xml" value="0.2222222222222222" />
+        <entry key="..\:/Android_Personal/Budget/app/src/main/res/drawable/ic_sports.xml" value="0.2222222222222222" />
+        <entry key="..\:/Android_Personal/Budget/app/src/main/res/drawable/ic_travel.xml" value="0.2222222222222222" />
+        <entry key="..\:/Android_Personal/Budget/app/src/main/res/layout/activity_add_expense.xml" value="0.2" />
+        <entry key="..\:/Android_Personal/Budget/app/src/main/res/layout/activity_expense_list_dispay.xml" value="0.22735507246376813" />
         <entry key="..\:/Android_Personal/Budget/app/src/main/res/layout/activity_main.xml" value="0.1793478260869565" />
+        <entry key="..\:/Android_Personal/Budget/app/src/main/res/layout/activity_report.xml" value="0.264" />
+        <entry key="..\:/Android_Personal/Budget/app/src/main/res/layout/expense_list_item.xml" value="0.22735507246376813" />
         <entry key="..\:/Android_Personal/Budget/app/src/main/res/menu/add_amount_menu.xml" value="0.27447916666666666" />
+        <entry key="..\:/Android_Personal/Budget/app/src/main/res/menu/report_menu.xml" value="0.27447916666666666" />
       </map>
     </option>
   </component>

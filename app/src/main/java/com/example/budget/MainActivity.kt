@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        supportActionBar?.hide()
         mWaitHandler.postDelayed({
             //The following code will execute after the 5 seconds.
             try {
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
             } catch (ignored: Exception) {
                 ignored.printStackTrace()
             }
-        }, 2000) // Give a 5 seconds delay.
+        }, 1000) // Give a 5 seconds delay.
     }
 
     override fun onDestroy() {
