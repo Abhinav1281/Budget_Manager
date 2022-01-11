@@ -20,6 +20,7 @@ import android.widget.DatePicker
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Intent
+import com.google.android.material.bottomappbar.BottomAppBar
 
 
 class ReportActivity : AppCompatActivity() {
@@ -51,8 +52,15 @@ class ReportActivity : AppCompatActivity() {
             general_progress,phone_progress,sports_progress,pets_progress,travel_progress)
 
         changeViewToToday()
+        setUpBottomNavBar()
 
+    }
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun setUpBottomNavBar() {
+        bottomAppBar.setOnMenuItemClickListener {
+            onOptionsItemSelected(it)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -68,6 +76,9 @@ class ReportActivity : AppCompatActivity() {
         year_select.setOnClickListener {
             setUpDonutView()
             changeViewToYear()
+        }
+        show_as_list.setOnClickListener {
+            goToListView()
         }
     }
 
@@ -284,7 +295,6 @@ class ReportActivity : AppCompatActivity() {
         {
             android.R.id.home->startActivity(Intent(this,Add_Expense::class.java))
             R.id.Calendar_call->datePickDialog()
-            R.id.show_as_list->goToListView()
         }
         return super.onOptionsItemSelected(item)
     }

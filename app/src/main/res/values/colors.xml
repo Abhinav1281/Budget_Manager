@@ -11,7 +11,7 @@
     <color name="Basic_bg">#191B27</color>
     
 <!--    category_colors-->
-    <color name="Red">#FF3345</color>
+    <color name="Red">#E50914</color>
     <color name="Yellow">#FFDF72</color>
     <color name="Green">#77D98F</color>
     <color name="Blue">#497DEF</color>
@@ -21,4 +21,5 @@
     <color name="Teal">#4AEDC4</color>
     
     <color name="ItemSelect">#1F2027</color>
+    <color name="BG_grey">#DACFCF</color>
 </resources>

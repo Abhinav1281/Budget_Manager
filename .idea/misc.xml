@@ -6,6 +6,8 @@
         <entry key="..\:/Android_Personal/Budget/app/src/main/res/drawable-v24/button_bg_selected.xml" value="0.22777777777777777" />
         <entry key="..\:/Android_Personal/Budget/app/src/main/res/drawable/bg_basic.xml" value="0.23703703703703705" />
         <entry key="..\:/Android_Personal/Budget/app/src/main/res/drawable/button_bg.xml" value="0.23703703703703705" />
+        <entry key="..\:/Android_Personal/Budget/app/src/main/res/drawable/const_bg.xml" value="0.28615384615384615" />
+        <entry key="..\:/Android_Personal/Budget/app/src/main/res/drawable/ic_calendar.xml" value="0.28615384615384615" />
         <entry key="..\:/Android_Personal/Budget/app/src/main/res/drawable/ic_food.xml" value="0.2222222222222222" />
         <entry key="..\:/Android_Personal/Budget/app/src/main/res/drawable/ic_game.xml" value="0.2222222222222222" />
         <entry key="..\:/Android_Personal/Budget/app/src/main/res/drawable/ic_home.xml" value="0.2222222222222222" />
@@ -21,6 +23,7 @@
         <entry key="..\:/Android_Personal/Budget/app/src/main/res/layout/activity_main.xml" value="0.1793478260869565" />
         <entry key="..\:/Android_Personal/Budget/app/src/main/res/layout/activity_report.xml" value="0.264" />
         <entry key="..\:/Android_Personal/Budget/app/src/main/res/layout/expense_list_item.xml" value="0.22735507246376813" />
+        <entry key="..\:/Android_Personal/Budget/app/src/main/res/layout/fragment_list_view.xml" value="0.26403985507246375" />
         <entry key="..\:/Android_Personal/Budget/app/src/main/res/menu/add_amount_menu.xml" value="0.27447916666666666" />
         <entry key="..\:/Android_Personal/Budget/app/src/main/res/menu/report_menu.xml" value="0.27447916666666666" />
       </map>

@@ -11,10 +11,12 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budget.utils.ExpenseViewModel
+import com.google.android.material.snackbar.Snackbar
 
 import kotlinx.android.synthetic.main.activity_expense_list_dispay.*
 import java.util.*
@@ -32,12 +34,9 @@ class ExpenseListDisplay : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_expense_list_dispay)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_report)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setBackgroundDrawable(getDrawable(R.color.black))
-        supportActionBar?.title=""
+        supportActionBar?.hide()
 
-        //datePicker
+
 
         day= intent.getIntExtra("DAY",-1)
         month= intent.getIntExtra("MONTH",-1)
@@ -48,7 +47,7 @@ class ExpenseListDisplay : AppCompatActivity() {
         setUpListener()
         getListItems()
 
-        Toast.makeText(this,"This is Under Development!!!",Toast.LENGTH_LONG).show()
+        Snackbar.make(list_view_tag,"This is under development",Snackbar.LENGTH_SHORT).setAnchorView(add_expense).show()
     }
 
 
@@ -161,7 +160,18 @@ class ExpenseListDisplay : AppCompatActivity() {
             }
         }).attachToRecyclerView(ui_recyclerView)
 
+        //bottomAppBar
+        setUpBottomAppBar()
 
+    }
+
+    private fun setUpBottomAppBar() {
+        bottomAppBar.setOnMenuItemClickListener {
+            onOptionsItemSelected(it)
+        }
+        bottomAppBar.setNavigationOnClickListener {
+            startActivity(Intent(this,ReportActivity::class.java))
+        }
     }
 
     private fun setUpDatePicker() {
@@ -188,6 +198,7 @@ class ExpenseListDisplay : AppCompatActivity() {
             supportActionBar?.title=""
             calendar_view.visibility = View.GONE
             list_view_tag.alpha=1.0F
+            ui_recyclerView.alpha=1.0F
         }
         date_final_list_btn.setOnClickListener {
             val date=date_picker_list_view.date
@@ -207,6 +218,7 @@ class ExpenseListDisplay : AppCompatActivity() {
             supportActionBar?.title=""
             calendar_view.visibility = View.GONE
             list_view_tag.alpha=1.0F
+            ui_recyclerView.alpha=1.0F
         }
     }
 
@@ -233,16 +245,14 @@ class ExpenseListDisplay : AppCompatActivity() {
                     supportActionBar?.title="Select Date"
                     calendar_view.visibility = View.VISIBLE
                     list_view_tag.alpha=0.0F
+                    ui_recyclerView.alpha=0.0F
                 }
                 else {
                     supportActionBar?.title=""
                     calendar_view.visibility = View.GONE
                     list_view_tag.alpha=1.0F
+                    ui_recyclerView.alpha=1.0F
                 }
-            }
-            android.R.id.home->
-            {
-                startActivity(Intent(this,ReportActivity::class.java))
             }
         }
         return super.onOptionsItemSelected(item)
